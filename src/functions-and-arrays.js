@@ -9,7 +9,6 @@ function maxOfTwoNumbers(num1, num2) {
   }
 }
 
-
 // Iteration #2: Find longest word
 const words = ['mystery', 'brother', 'aviator', 'crocodile', 'pearl', 'orchard', 'crackpot'];
 
@@ -29,14 +28,13 @@ function findLongestWord(someArray) {
 
 console.log(findLongestWord(words));
 
-
 // Iteration #3: Calculate the sum
 const numbers = [6, 12, 1, 18, 13, 16, 2, 1, 8, 10];
 
 function sumNumbers(numArray) {
   let sum = 0;
   numArray.forEach(function (element) {
-    sum = sum + element;
+    sum += element;
   });
   return sum;
 }
@@ -61,7 +59,6 @@ function sumContent(numArray) {
 }
 
 console.log(sumContent(mixedArr));
-
 
 // Iteration #4: Calculate the average
 // Level 1: Array of numbers
@@ -88,7 +85,6 @@ function avg(someArray) {
 }
 
 console.log(avg(mixedArr));
-
 
 // Iteration #5: Unique arrays
 const wordsUnique = [
@@ -118,7 +114,6 @@ function uniquifyArray(someArray) {
 
 console.log(uniquifyArray(wordsUnique));
 
-
 // Iteration #6: Find elements
 const wordsFind = ['machine', 'subset', 'trouble', 'starting', 'matter', 'eating', 'truth', 'disobedience'];
 
@@ -127,7 +122,6 @@ function doesWordExist(someArray, word) {
 }
 
 console.log(doesWordExist(wordsFind, 'trouble'));
-
 
 // Iteration #7: Count repetition
 const wordsCount = [
@@ -144,27 +138,15 @@ const wordsCount = [
   'matter'
 ];
 
-//I searched and tried several things before to get the result and I'm not 100% that I understood 100% of the code
-
-/*function howManyTimes(someArray, word) {
-  let count = someArray.filter(function (element){
-   return element.indexOf(word) !== -1;
+function howManyTimes(someArray, word) {
+  let count = someArray.filter(function (element) {
+    return element.indexOf(word) !== -1;
   });
 
- return count.length;
- }*/
-
-function howManyTimes(someArray, word) {
-  let count = 0;
-  for (target of someArray) {
-    if (target === word) count++;
-  }
-  return count;
+  return count.length;
 }
 
 howManyTimes(wordsCount, 'matter');
-
-
 
 // Iteration #8: Bonus
 const matrix = [
@@ -191,32 +173,69 @@ const matrix = [
 ];
 
 function greatestProduct(someMatrix) {
-  let horizontalGreatest = [];
-  let verticalGreatest = [];
+  //   let greatestArr = [];
 
-  //get to multiply 4 horizontal in a loop and compare to previous operation to keep the greatest
-for (i = 0; i < someMatrix.length; i++){
-  let horizontalSum = 0;
-  someMatrix[i][].forEach(function (element, index){
-        if (horizontalSum < element * someMatrix[i][index++] * someMatrix[i][index + 2] * someMatrix[i][index + 3]){
-          horizontalSum = element * someMatrix[i][index++] * someMatrix[i][index + 2] * someMatrix[i][index + 3];
-          horizontalGreatest.splice(0, 4);
-          horizontalGreatest.push(element, someMatrix[i][index++], someMatrix[i][index + 2], someMatrix[i][index + 3]);
+  let horizontalMax = 0;
+  let verticalMax = 0;
+  let diagonalMax = 0;
+
+  let maxProduct = 0;
+
+  //Get to 4 horizontal max
+  for (i = 0; i < someMatrix.length; i++) {
+    for (let j = 0; j < someMatrix[i].length; j++) {
+      if (
+        horizontalMax < someMatrix[i][j] * someMatrix[i][j + 1] * someMatrix[i][j + 2] * someMatrix[i][j + 3] &&
+        j + 3 <= someMatrix[i].length
+      ) {
+        horizontalMax = someMatrix[i][j] * someMatrix[i][j + 1] * someMatrix[i][j + 2] * someMatrix[i][j + 3];
+        if (horizontalMax > maxProduct) {
+          maxProduct = horizontalMax;
+          /* greatestArr.splice(0);
+      greatestArr.push(someMatrix[i][j], someMatrix[i][j + 1], someMatrix[i][j + 2], someMatrix[i][j +3]); */
         }
-  });
+      }
+    }
+  }
+
+  //Get to 4 vertical max
+  for (i = 0; i < someMatrix.length; i++) {
+    for (let j = 0; j < someMatrix[i].length; j++) {
+      if (
+        verticalMax < someMatrix[i][j] * someMatrix[i + 1][j] * someMatrix[i + 2][j] * someMatrix[i + 3][j] &&
+        j + 3 <= someMatrix[i].length
+      ) {
+        verticalMax = someMatrix[i][j] * someMatrix[i + 1][j] * someMatrix[i + 2][j] * someMatrix[i + 3][j];
+        if (verticalMax > maxProduct) {
+          maxProduct = verticalMax;
+          /* greatestArr.splice(0);
+  greatestArr.push(someMatrix[i][j], someMatrix[i + 1][j], someMatrix[i + 2][j], someMatrix[i + 3][j]); */
+        }
+      }
+    }
+  }
+
+  //Get to 4 diagonal max
+  for (i = 0; i < someMatrix.length; i++) {
+    for (let j = 0; j < someMatrix[i].length; j++) {
+      if (
+        (diagonalMax <
+          someMatrix[i][j] * someMatrix[i + 1][j + 1] * someMatrix[i + 2][j + 2] * someMatrix[i + 3][j + 3] &&
+          j + 3 <= someMatrix[i].length) ||
+        i + 3 <= someMatrix.length
+      ) {
+        diagonalMax = someMatrix[i][j] * someMatrix[i + 1][j + 1] * someMatrix[i + 2][j + 2] * someMatrix[i + 3][j + 3];
+        if (diagonalMax > maxProduct) {
+          maxProduct = diagonalMax;
+          /* greatestArr.splice(0);
+  greatestArr.push(someMatrix[i][j], someMatrix[i + 1][j + 1], someMatrix[i + 2][j + 2], someMatrix[i + 3][j + 3]); */
+        }
+      }
+    }
+  }
+
+  return maxProduct;
 }
-
-  //get to multiply 4 vertical in a loop and compare to previous operation to keep the greatest
-
-
-
-console.log(horizontalGreatest);
-console.log(verticalalGreatest);
-
-
-  //compare horizontal greatest and vertical greatest
-}
-
 greatestProduct(matrix);
 
 // The following is required to make unit tests work.
