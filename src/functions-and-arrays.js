@@ -48,11 +48,11 @@ function sumContent(numArray) {
   let sum = 0;
   numArray.forEach(function (element) {
     if (typeof element === 'number') {
-      sum = sum + element;
+      sum += element;
     } else if (typeof element === 'string') {
-      sum = sum + element.length;
+      sum += element.length;
     } else if (typeof element === 'boolean') {
-      sum = sum + Number(element);
+      sum += Number(element);
     }
   });
   return sum;
@@ -139,7 +139,7 @@ const wordsCount = [
 ];
 
 function howManyTimes(someArray, word) {
-  let count = someArray.filter(function (element) {
+  let count = someArray.filter( (element) => {
     return element.indexOf(word) !== -1;
   });
 
@@ -173,69 +173,38 @@ const matrix = [
 ];
 
 function greatestProduct(someMatrix) {
-  //   let greatestArr = [];
-
-  let horizontalMax = 0;
-  let verticalMax = 0;
-  let diagonalMax = 0;
-
   let maxProduct = 0;
 
-  //Get to 4 horizontal max
   for (i = 0; i < someMatrix.length; i++) {
-    for (let j = 0; j < someMatrix[i].length; j++) {
-      if (
-        horizontalMax < someMatrix[i][j] * someMatrix[i][j + 1] * someMatrix[i][j + 2] * someMatrix[i][j + 3] &&
-        j + 3 <= someMatrix[i].length
-      ) {
-        horizontalMax = someMatrix[i][j] * someMatrix[i][j + 1] * someMatrix[i][j + 2] * someMatrix[i][j + 3];
-        if (horizontalMax > maxProduct) {
-          maxProduct = horizontalMax;
-          /* greatestArr.splice(0);
-      greatestArr.push(someMatrix[i][j], someMatrix[i][j + 1], someMatrix[i][j + 2], someMatrix[i][j +3]); */
-        }
+    for (let j = 0; j < someMatrix[i].length -4; j++) {
+      //Horizontal
+      let horizontalProduct = someMatrix[i][j] * someMatrix[i][j + 1] * someMatrix[i][j + 2] * someMatrix[i][j + 3];
+      if (horizontalProduct > maxProduct) {
+        maxProduct = horizontalProduct;
+      }
+      //Vertical
+      let verticalProduct = someMatrix[i][j] * someMatrix[i + 1][j] * someMatrix[i + 2][j] * someMatrix[i + 3][j];
+      if (verticalProduct > maxProduct){
+        maxProduct = verticalProduct;
+      }
+      //Diagonal left-right, top-bottom
+      let diagonalProduct1 = someMatrix[i][j] * someMatrix[i + 1][j + 1] * someMatrix[i + 2][j + 2] * someMatrix[i + 3][j + 3];
+      if (diagonalProduct1 > maxProduct){
+        maxProduct = diagonalProduct1;
       }
     }
-  }
-
-  //Get to 4 vertical max
-  for (i = 0; i < someMatrix.length; i++) {
-    for (let j = 0; j < someMatrix[i].length; j++) {
-      if (
-        verticalMax < someMatrix[i][j] * someMatrix[i + 1][j] * someMatrix[i + 2][j] * someMatrix[i + 3][j] &&
-        j + 3 <= someMatrix[i].length
-      ) {
-        verticalMax = someMatrix[i][j] * someMatrix[i + 1][j] * someMatrix[i + 2][j] * someMatrix[i + 3][j];
-        if (verticalMax > maxProduct) {
-          maxProduct = verticalMax;
-          /* greatestArr.splice(0);
-  greatestArr.push(someMatrix[i][j], someMatrix[i + 1][j], someMatrix[i + 2][j], someMatrix[i + 3][j]); */
-        }
-      }
+      //Diagonal right-left, top-bottom
+    for (let j = 3; j < someMatrix[i].length -4; j++) {
+      let diagonalProduct2 = someMatrix[i][j] * someMatrix[i + 1][j - 1] * someMatrix[i + 2][j - 2] * someMatrix[i + 3][j - 3];
+      if (diagonalProduct2 > maxProduct){
+        maxProduct = diagonalProduct2;
     }
   }
-
-  //Get to 4 diagonal max
-  for (i = 0; i < someMatrix.length; i++) {
-    for (let j = 0; j < someMatrix[i].length; j++) {
-      if (
-        (diagonalMax <
-          someMatrix[i][j] * someMatrix[i + 1][j + 1] * someMatrix[i + 2][j + 2] * someMatrix[i + 3][j + 3] &&
-          j + 3 <= someMatrix[i].length) ||
-        i + 3 <= someMatrix.length
-      ) {
-        diagonalMax = someMatrix[i][j] * someMatrix[i + 1][j + 1] * someMatrix[i + 2][j + 2] * someMatrix[i + 3][j + 3];
-        if (diagonalMax > maxProduct) {
-          maxProduct = diagonalMax;
-          /* greatestArr.splice(0);
-  greatestArr.push(someMatrix[i][j], someMatrix[i + 1][j + 1], someMatrix[i + 2][j + 2], someMatrix[i + 3][j + 3]); */
-        }
-      }
-    }
-  }
-
   return maxProduct;
 }
+ //Use the same logic for the other diagonals (from bottom to top) changing the index of the for loop and diagonalProducts.
+}
+
 greatestProduct(matrix);
 
 // The following is required to make unit tests work.
